@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../sqflite/database_helper.dart';
+import 'Toast/flutter_toast.dart';
 import 'Widgets/date_picker.dart';
+import 'Widgets/dialog/alert_dialog.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -218,6 +220,7 @@ class _HomePageState extends State<HomePage> {
             refreshBills(selectedYear, selectedMonth);
             incomeBill(selectedYear, selectedMonth);
             disburseBill(selectedYear, selectedMonth);
+            showSuccessToast(msg: '刷新成功');
           },
           displacement: 5.0,
           child: ListView.builder(
@@ -243,11 +246,19 @@ class _HomePageState extends State<HomePage> {
                     ),
                     // 显示该日期下的所有账单
                     ...billsOnDate.map((bill) {
-                      return ListTile(
-                        title: Text("${bill['category']} - ${bill['amount']}"),
-                        subtitle: Text(bill['note'],
-                            style: const TextStyle(fontSize: 12)),
-                        trailing: Text(bill['type']),
+                      return GestureDetector(
+                        onTap: () {
+                          showCustomDialog(
+                              context: context, title: '详情', content: '详情信息');
+                        },
+                        child: ListTile(
+                          title:
+                              Text("${bill['category']} - ${bill['amount']}"),
+                          subtitle: Text(bill['note'],
+                              maxLines: 1,
+                              style: const TextStyle(fontSize: 12)),
+                          trailing: Text(bill['type']),
+                        ),
                       );
                     }),
                   ],

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart'; // 导入 provider
 
 import '../theme_provider.dart'; // 导入 ThemeProvider
+import 'Toast/flutter_toast.dart';
 
 class minePage extends StatefulWidget {
   const minePage({super.key});
@@ -68,7 +68,7 @@ class _minePageState extends State<minePage> {
     super.initState();
     _loadCheckInStatus();
     _loadImage();
-    _CheckInStatus();
+    _checkInStatus();
   }
 
   // 保存计数器路径到SharedPreferences
@@ -76,21 +76,20 @@ class _minePageState extends State<minePage> {
     String today = DateTime.now().toIso8601String().substring(0, 10);
     final prefs = await SharedPreferences.getInstance();
     if (_hasCheckedInToday) {
-      print('aaaa');
       return;
     } else {
-      print('bbb');
       await prefs.setString(today, 'chekcin');
       setState(() {
         _hasCheckedInToday = true;
         _loadCheckInStatus();
+        showSuccessToast(msg: '签到成功');
       });
     }
   }
 
   // 加载签到天数
   Future<void> _loadCheckInStatus() async {
-    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    // String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     final prefs = await SharedPreferences.getInstance();
     final keys = prefs.getKeys();
     // 定义正则表达式，匹配 "yyyy-MM-dd" 格式的日期
@@ -107,7 +106,7 @@ class _minePageState extends State<minePage> {
   }
 
   // 查询是否签到
-  Future<void> _CheckInStatus() async {
+  Future<void> _checkInStatus() async {
     String today = DateTime.now().toIso8601String().substring(0, 10);
     final prefs = await SharedPreferences.getInstance();
     final isCheckIn = prefs.getString(today);
@@ -256,7 +255,7 @@ class _minePageState extends State<minePage> {
         child: CircleAvatar(
           radius: 40,
           backgroundImage: _image == null
-              ? AssetImage('assets/images/avatar.png')
+              ? const AssetImage('assets/images/avatar.png')
               : FileImage(File(_image!.path)),
         ),
       ),
@@ -264,10 +263,10 @@ class _minePageState extends State<minePage> {
 
     final mineIntro = Column(children: [
       Text('已连续签到$_counter天'),
-      SizedBox(
+      const SizedBox(
         height: 10,
       ),
-      Text('韩磊'),
+      const Text('韩磊'),
     ]);
     return Scaffold(
       body: Container(

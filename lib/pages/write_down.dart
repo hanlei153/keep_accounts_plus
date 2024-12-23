@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'Widgets/build_check_class.dart';
 import '../sqflite/database_helper.dart';
 import 'Widgets/dialog/alert_dialog.dart';
+import 'Toast/flutter_toast.dart';
 
 class WriteDownPage extends StatefulWidget {
   @override
@@ -80,6 +81,7 @@ class _WriteDownPageState extends State<WriteDownPage> {
         });
         _controller.clear();
         _noteController.clear();
+        showSuccessToast(msg: '完成');
       });
       return;
     }
