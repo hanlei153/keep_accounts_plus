@@ -37,6 +37,7 @@ Future<void> settings({required BuildContext context}) async {
                             // 如果 username 为 null，使用默认值
                             displayName = '用户9527'; // 默认值
                           }
+                          Navigator.pop(context);
                           Navigator.push(
                               context,
                               MaterialPageRoute(

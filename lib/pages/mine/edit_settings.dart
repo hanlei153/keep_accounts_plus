@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:keep_accounts_plus/pages/Widgets/dialog/alert_dialog.dart';
 import '../../common/sharedppreferences.dart/sharedPreferences.dart';
+import '../../pages/Toast/flutter_toast.dart';
 
 class EditSettings extends StatefulWidget {
   final String title;
@@ -20,9 +22,15 @@ class _EditSettingsState extends State<EditSettings> {
     super.dispose();
   }
 
-  void _save() {
-    setString('username', _controller.text);
-    Navigator.pop(context);
+  void _save() async {
+    if (_controller.text.isEmpty) {
+      showCustomDialog(context: context, title: '提示', content: '不允许设置空白用户名');
+    } else {
+      setString('username', _controller.text);
+      showSuccessToast(msg: '保存成功');
+      await Future.delayed(const Duration(milliseconds: 800));
+      Navigator.pop(context);
+    }
   }
 
   @override
