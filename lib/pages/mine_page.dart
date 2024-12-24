@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:provider/provider.dart'; // 导入 provider
-
-import '../theme_provider.dart'; // 导入 ThemeProvider
 import 'Toast/flutter_toast.dart';
+import 'mine/settings.dart';
+import '../common/sharedppreferences.dart/sharedPreferences.dart';
 
 class minePage extends StatefulWidget {
   const minePage({super.key});
 
   @override
-  State<minePage> createState() => _minePageState();
+  State<minePage> createState() => _MinePageState();
 }
 
-class _minePageState extends State<minePage> {
+class _MinePageState extends State<minePage> {
   int _counter = 0;
   bool _hasCheckedInToday = false;
+  String? username = '用户9527';
 
   final ImagePicker _picker = ImagePicker();
   XFile? _image; // 用于存储选择的图片文件
@@ -66,9 +66,20 @@ class _minePageState extends State<minePage> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _loadUsername();
+    });
     _loadCheckInStatus();
     _loadImage();
     _checkInStatus();
+  }
+
+  // 加载用户名
+  Future<void> _loadUsername() async {
+    final loadedUsername = await getString('username'); // 获取用户名
+    setState(() {
+      username = loadedUsername; // 更新 username
+    });
   }
 
   // 保存计数器路径到SharedPreferences
@@ -123,36 +134,9 @@ class _minePageState extends State<minePage> {
     final checkIn = Row(
       children: [
         GestureDetector(
-          onTap: () {
-            showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return Container(
-                    padding: const EdgeInsets.all(10),
-                    height: 100,
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          '主题跟随系统',
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
-                        Switch(
-                          value:
-                              Provider.of<ThemeProvider>(context).isSystemTheme,
-                          onChanged: (bool value) {
-                            // 切换主题模式
-                            Provider.of<ThemeProvider>(context, listen: false)
-                                .toggleTheme(value);
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                });
+          onTap: () async {
+            await settings(context: context);
+            _loadUsername();
           },
           child: Container(
             padding: const EdgeInsets.only(top: 40, left: 15),
@@ -266,7 +250,7 @@ class _minePageState extends State<minePage> {
       const SizedBox(
         height: 10,
       ),
-      const Text('韩磊'),
+      Text(username != null ? '$username' : '用户9527'),
     ]);
     return Scaffold(
       body: Container(

@@ -5,6 +5,7 @@ import '../sqflite/database_helper.dart';
 import 'Toast/flutter_toast.dart';
 import 'Widgets/date_picker.dart';
 import 'Widgets/dialog/alert_dialog.dart';
+import '../common/model/bill_info.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -248,8 +249,11 @@ class _HomePageState extends State<HomePage> {
                     ...billsOnDate.map((bill) {
                       return GestureDetector(
                         onTap: () {
-                          showCustomDialog(
-                              context: context, title: '详情', content: '详情信息');
+                          final Bill billInfo = Bill.fromJson(bill);
+                          showBillDialog(
+                              context: context,
+                              title: '详情',
+                              content1: billInfo);
                         },
                         child: ListTile(
                           title:
