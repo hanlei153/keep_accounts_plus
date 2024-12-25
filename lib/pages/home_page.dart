@@ -98,6 +98,7 @@ class _HomePageState extends State<HomePage> {
         'bills',
         where: 'date BETWEEN ? AND ?',
         whereArgs: ['$yearMonthStr-01', '$yearMonthStr-31'],
+        orderBy: 'date DESC',
       );
     });
     setState(() {

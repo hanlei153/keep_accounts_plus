@@ -19,27 +19,30 @@ class _WriteDownPageState extends State<WriteDownPage> {
   String? selectedValue = '支出';
   String? checkClassKey = '';
 
-  final Map<String, IconData> income = {
-    '工资': Icons.work,
-    '兼职': Icons.business_center,
-    '理财': Icons.attach_money,
-    '礼金': Icons.card_giftcard,
-    '其他': Icons.more_horiz,
+  final Map<String, Widget> income = {
+    '工资': Image.asset(width: 30, 'assets/icon/income_disburse/salary-male.png'),
+    '兼职': Image.asset(
+        width: 30, 'assets/icon/income_disburse/flyer-distributor-male.png'),
+    '理财': Image.asset(
+        width: 30, 'assets/icon/income_disburse/money-circulation.png'),
+    '礼金': Image.asset(width: 30, 'assets/icon/income_disburse/gift.png'),
+    '其他': Image.asset(width: 30, 'assets/icon/income_disburse/view-more.png'),
   };
 
-  final Map<String, IconData> disburse = {
-    '餐饮': Icons.local_dining,
-    '水果': Icons.local_dining,
-    '购物': Icons.shopping_cart,
-    '交通': Icons.directions_car,
-    '娱乐': Icons.movie,
-    '住房': Icons.house,
-    '社交': Icons.group,
-    '旅行': Icons.travel_explore,
-    '宠物': Icons.pets,
-    '医疗': Icons.local_hospital,
-    '服饰': Icons.shopping_bag,
-    '其他': Icons.more_horiz,
+  final Map<String, Widget> disburse = {
+    '餐饮':
+        Image.asset(width: 30, 'assets/icon/income_disburse/local_dining.png'),
+    '水果': Image.asset(width: 30, 'assets/icon/income_disburse/fruit.png'),
+    '购物': Image.asset(width: 30, 'assets/icon/income_disburse/shopping.png'),
+    '交通': Image.asset(width: 30, 'assets/icon/income_disburse/car.png'),
+    '娱乐': Image.asset(width: 30, 'assets/icon/income_disburse/party.png'),
+    '住房': Image.asset(width: 30, 'assets/icon/income_disburse/house.png'),
+    '社交': Image.asset(width: 30, 'assets/icon/income_disburse/group.png'),
+    '旅行': Image.asset(width: 30, 'assets/icon/income_disburse/traveler.png'),
+    '宠物': Image.asset(width: 30, 'assets/icon/income_disburse/pets.png'),
+    '医疗': Image.asset(width: 30, 'assets/icon/income_disburse/treatment.png'),
+    '服饰': Image.asset(width: 30, 'assets/icon/income_disburse/clothes.png'),
+    '其他': Image.asset(width: 30, 'assets/icon/income_disburse/view-more.png'),
   };
 
   @override

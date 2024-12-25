@@ -24,24 +24,35 @@ class _MainFramePageState extends State<MainFramePage> {
 
   @override
   Widget build(BuildContext context) {
+    double imageSize = 24;
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onTapItem,
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Image.asset(
+              'assets/icon/bottomNavigationBar/home.png',
+              width: imageSize,
+              fit: BoxFit.contain,
+            ),
             label: "首页",
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.add,
+            icon: Image.asset(
+              'assets/icon/bottomNavigationBar/add.png',
+              width: imageSize,
+              fit: BoxFit.contain,
             ),
             label: "记一笔",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Image.asset(
+              'assets/icon/bottomNavigationBar/mine.gif',
+              width: imageSize,
+              fit: BoxFit.contain,
+            ),
             label: "我的",
           ),
         ],

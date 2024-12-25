@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BuildCheckClass extends StatefulWidget {
-  final Map<String, IconData> checkClass;
+  final Map<String, Widget> checkClass;
   final String selectedValue;
   final ValueChanged<String> onSelected;
   const BuildCheckClass({
@@ -37,7 +37,7 @@ class _BuildCheckClassState extends State<BuildCheckClass> {
         crossAxisCount: 4,
         children: List.generate(widget.checkClass.length, (index) {
           String key = widget.checkClass.keys.elementAt(index);
-          IconData value = widget.checkClass[key]!;
+          Widget value = widget.checkClass[key]!;
           return Column(
             children: [
               GestureDetector(
@@ -58,11 +58,7 @@ class _BuildCheckClassState extends State<BuildCheckClass> {
                         : const Color.fromARGB(255, 212, 212, 212),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(
-                    value,
-                    size: 30,
-                    color: const Color.fromARGB(255, 88, 88, 88),
-                  ),
+                  child: value,
                 ),
               ),
               Text(key),
