@@ -24,13 +24,17 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    // 使用 WidgetsBinding 延迟调用 loadThemeStatus
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     if (themeProvider.loadThemeStatus != null) {
       themeProvider.loadThemeStatus();
     } else {
       themeProvider.toggleTheme(true); // 默认为系统主题
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   // This widget is the root of your application.

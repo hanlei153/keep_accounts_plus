@@ -49,7 +49,7 @@ class _MainFramePageState extends State<MainFramePage> {
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
-              'assets/icon/bottomNavigationBar/mine.gif',
+              'assets/icon/bottomNavigationBar/mine.png',
               width: imageSize,
               fit: BoxFit.contain,
             ),
