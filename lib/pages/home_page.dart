@@ -40,6 +40,8 @@ class _HomePageState extends State<HomePage> {
   int selectedMonth = DateTime.now().month;
   String disbursement = '';
   String income = '';
+  double disbursementDouble = 0;
+  double incomeDouble = 0;
 
   // 初始化
   @override
@@ -64,7 +66,10 @@ class _HomePageState extends State<HomePage> {
       if (results[0]['TotalAmount'] == null) {
         disbursement = '0';
       } else {
-        disbursement = results[0]['TotalAmount'].toString();
+        disbursementDouble = double.parse(results[0]['TotalAmount'].toString());
+        disbursement = disbursementDouble % 1 == 0
+            ? disbursementDouble.toStringAsFixed(0)
+            : disbursementDouble.toStringAsFixed(2);
       }
     });
   }
@@ -83,7 +88,10 @@ class _HomePageState extends State<HomePage> {
       if (results[0]['TotalAmount'] == null) {
         income = '0';
       } else {
-        income = results[0]['TotalAmount'].toString();
+        incomeDouble = double.parse(results[0]['TotalAmount'].toString());
+        income = incomeDouble % 1 == 0
+            ? incomeDouble.toStringAsFixed(0)
+            : incomeDouble.toStringAsFixed(2);
       }
     });
   }
@@ -204,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                 '支出: $disbursement',
                 style: billStyle,
               ),
-              SizedBox(width: MediaQuery.of(context).size.width * 0.2),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.15),
               Text(
                 '收入: $income',
                 style: billStyle,
@@ -223,6 +231,7 @@ class _HomePageState extends State<HomePage> {
             incomeBill(selectedYear, selectedMonth);
             disburseBill(selectedYear, selectedMonth);
             showSuccessToast(msg: '刷新成功');
+            print(double.parse(3.222.toStringAsFixed(2)));
           },
           displacement: 5.0,
           child: ListView.builder(
