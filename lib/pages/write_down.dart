@@ -64,7 +64,7 @@ class _WriteDownPageState extends State<WriteDownPage> {
     String category = checkClassKey!;
     String type = selectedValue!;
     String date = DateTime.now().toIso8601String().substring(0, 10);
-    String note = _noteController.text;
+    String note = _noteController.text == '' ? category : _noteController.text;
 
     if (amount == null || amount == 0) {
       showWarningDialog(context: context, title: '金额错误', content: '请输入正确的金额');

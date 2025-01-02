@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 
 class DatePicker {
   /// 返回用户选择的年份和月份，以 [int] 元组形式返回：`(year, month)`。
-  static Future<(int, int)> show(
-      BuildContext context, int selectedyear, int selectedmonth) async {
-    int selectedYear = selectedyear;
-    int selectedMonth = selectedmonth;
-
+  static Future<(int, int)> show(BuildContext context, int selectedyear,
+      int selectedmonth, String title) async {
+    int _selectedYear = selectedyear;
+    int _selectedMonth = selectedmonth;
+    String _title = title;
     bool isConfirm = false;
 
     await showModalBottomSheet(
@@ -41,7 +41,7 @@ class DatePicker {
                           Navigator.pop(context);
                         },
                         child: const Text('取消')),
-                    const Text('选择月份'),
+                    Text(_title),
                     GestureDetector(
                       onTap: () {
                         isConfirm = true;
@@ -68,10 +68,10 @@ class DatePicker {
                       Flexible(
                         child: CupertinoPicker(
                           onSelectedItemChanged: (int index) {
-                            selectedYear = 2000 + index;
+                            _selectedYear = 2000 + index;
                           },
                           scrollController: FixedExtentScrollController(
-                            initialItem: selectedYear - 2000,
+                            initialItem: _selectedYear - 2000,
                           ),
                           itemExtent: 40,
                           children: List<Widget>.generate(500, (index) {
@@ -84,10 +84,10 @@ class DatePicker {
                       Flexible(
                         child: CupertinoPicker(
                           onSelectedItemChanged: (int index) {
-                            selectedMonth = index + 1;
+                            _selectedMonth = index + 1;
                           },
                           scrollController: FixedExtentScrollController(
-                            initialItem: selectedMonth - 1,
+                            initialItem: _selectedMonth - 1,
                           ),
                           itemExtent: 40,
                           children: List<Widget>.generate(12, (index) {
@@ -111,7 +111,7 @@ class DatePicker {
     if (!isConfirm) {
       return (0, 0);
     } else {
-      return (selectedYear, selectedMonth);
+      return (_selectedYear, _selectedMonth);
     }
   }
 }

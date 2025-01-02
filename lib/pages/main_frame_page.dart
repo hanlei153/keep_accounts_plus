@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keep_accounts_plus/pages/analyze_page.dart';
 
 import 'home_page.dart';
 import 'write_down.dart';
@@ -14,7 +15,12 @@ class MainFramePage extends StatefulWidget {
 class _MainFramePageState extends State<MainFramePage> {
   int _selectedIndex = 0;
   // 当前选中的底部导航项
-  final List<Widget> _pages = [HomePage(), WriteDownPage(), minePage()];
+  final List<Widget> _pages = [
+    HomePage(),
+    AnalyzePage(),
+    WriteDownPage(),
+    minePage()
+  ];
 
   void _onTapItem(int index) {
     setState(() {
@@ -29,6 +35,8 @@ class _MainFramePageState extends State<MainFramePage> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
+        type: BottomNavigationBarType.shifting,
+        selectedItemColor: Theme.of(context).colorScheme.primary,
         onTap: _onTapItem,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -38,6 +46,14 @@ class _MainFramePageState extends State<MainFramePage> {
               fit: BoxFit.contain,
             ),
             label: "首页",
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset(
+              'assets/icon/bottomNavigationBar/bill.png',
+              width: imageSize,
+              fit: BoxFit.contain,
+            ),
+            label: "分析",
           ),
           BottomNavigationBarItem(
             icon: Image.asset(

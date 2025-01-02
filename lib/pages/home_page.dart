@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../sqflite/database_helper.dart';
 import 'Toast/flutter_toast.dart';
-import 'Widgets/date_picker.dart';
+import 'Widgets/date_picker_year_month.dart';
 import 'Widgets/dialog/alert_dialog.dart';
 import '../common/model/bill_info.dart';
+import '../common/common_future/select_sqflte.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -54,14 +54,7 @@ class _HomePageState extends State<HomePage> {
 
   // 月支出账单
   Future<void> disburseBill(int year, int month) async {
-    String monthStr = month.toString().padLeft(2, '0');
-    String yearStr = year.toString();
-    String yearMonthStr = '$yearStr-$monthStr';
-    final results = await DatabaseHelper.instance.database.then((db) {
-      return db.rawQuery(
-          'SELECT SUM(amount) AS TotalAmount FROM bills WHERE type = "支出" AND date BETWEEN? AND?',
-          ['$yearMonthStr-01', '$yearMonthStr-31']);
-    });
+    final results = await monthDisburseBill(year, month);
     setState(() {
       if (results[0]['TotalAmount'] == null) {
         disbursement = '0';
@@ -76,14 +69,7 @@ class _HomePageState extends State<HomePage> {
 
   // 月收入账单
   Future<void> incomeBill(int year, int month) async {
-    String monthStr = month.toString().padLeft(2, '0');
-    String yearStr = year.toString();
-    String yearMonthStr = '$yearStr-$monthStr';
-    final results = await DatabaseHelper.instance.database.then((db) {
-      return db.rawQuery(
-          'SELECT SUM(amount) AS TotalAmount FROM bills WHERE type = "收入" AND date BETWEEN? AND?',
-          ['$yearMonthStr-01', '$yearMonthStr-31']);
-    });
+    final results = await monthIncomeBill(year, month);
     setState(() {
       if (results[0]['TotalAmount'] == null) {
         income = '0';
@@ -98,26 +84,9 @@ class _HomePageState extends State<HomePage> {
 
   //月账单详细列表
   Future<void> refreshBills(int year, int month) async {
-    String monthStr = month.toString().padLeft(2, '0');
-    String yearStr = year.toString();
-    String yearMonthStr = '$yearStr-$monthStr';
-    final bills = await DatabaseHelper.instance.database.then((db) {
-      return db.query(
-        'bills',
-        where: 'date BETWEEN ? AND ?',
-        whereArgs: ['$yearMonthStr-01', '$yearMonthStr-31'],
-        orderBy: 'date DESC',
-      );
-    });
+    final results = await monthBills(year, month);
     setState(() {
-      _bills = bills;
-    });
-  }
-
-  // 删除所有账单
-  void _deleteAllBill() async {
-    await DatabaseHelper.instance.database.then((db) {
-      return db.delete('bills');
+      _bills = results;
     });
   }
 
@@ -167,7 +136,7 @@ class _HomePageState extends State<HomePage> {
               GestureDetector(
                 onTap: () async {
                   final (year, month) = await DatePicker.show(
-                      context, selectedYear, selectedMonth);
+                      context, selectedYear, selectedMonth, '选择日期');
                   setState(() {
                     if (year == 0 && month == 0) {
                       return;
@@ -231,7 +200,6 @@ class _HomePageState extends State<HomePage> {
             incomeBill(selectedYear, selectedMonth);
             disburseBill(selectedYear, selectedMonth);
             showSuccessToast(msg: '刷新成功');
-            print(double.parse(3.222.toStringAsFixed(2)));
           },
           displacement: 5.0,
           child: ListView.builder(
