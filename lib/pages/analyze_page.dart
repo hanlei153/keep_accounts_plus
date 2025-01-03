@@ -53,6 +53,44 @@ class _AnalyzePageState extends State<AnalyzePage> {
 
   @override
   Widget build(BuildContext context) {
+    // 根据不同的分类给饼图每个扇区设置颜色
+    Color _getColorForCategory(String category) {
+      switch (category) {
+        case '餐饮':
+          return Colors.blue;
+        case '水果':
+          return Colors.green;
+        case '购物':
+          return Colors.orange;
+        case '交通':
+          return Colors.red;
+        case '娱乐':
+          return const Color.fromRGBO(51, 145, 233, 0.8);
+        case '住房':
+          return const Color.fromRGBO(117, 223, 56, 0.8);
+        case '社交':
+          return const Color.fromRGBO(236, 204, 62, 0.8);
+        case '旅行':
+          return const Color.fromRGBO(87, 188, 255, 0.8);
+        case '宠物':
+          return const Color.fromRGBO(255, 99, 99, 0.8);
+        case '医疗':
+          return const Color.fromRGBO(116, 255, 174, 0.8);
+        case '服饰':
+          return const Color.fromRGBO(102, 255, 255, 0.8);
+        case '工资':
+          return const Color.fromRGBO(135, 181, 250, 0.8);
+        case '兼职':
+          return const Color.fromRGBO(127, 255, 191, 0.8);
+        case '理财':
+          return const Color.fromRGBO(156, 247, 231, 0.8);
+        case '礼金':
+          return const Color.fromRGBO(209, 110, 226, 0.8);
+        default:
+          return Colors.grey;
+      }
+    }
+
     // 选择日期组件
     final selectedDaysWidget = GestureDetector(
       onTap: () async {
@@ -167,14 +205,42 @@ class _AnalyzePageState extends State<AnalyzePage> {
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return Text('data is empty');
                   } else {
-                    return SizedBox(
-                        height: 300,
-                        width: 300,
-                        child: PieChartWidget(
-                            sections: PieChartWidget.generateSections(
-                                snapshot.data!)));
+                    return Column(
+                      children: [
+                        SizedBox(
+                            height: 300,
+                            width: 300,
+                            child: PieChartWidget(
+                                sections: PieChartWidget.generateSections(
+                                    snapshot.data!))),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children:
+                                List.generate(snapshot.data!.length, (index) {
+                              // 获取 Map 的键
+                              String key = snapshot.data!.keys.elementAt(index);
+
+                              return Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: _getColorForCategory(key),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    key,
+                                    style: const TextStyle(fontSize: 16),
+                                  )
+                                ],
+                              );
+                            })),
+                      ],
+                    );
                   }
-                })
+                }),
           ],
         ),
       ),
