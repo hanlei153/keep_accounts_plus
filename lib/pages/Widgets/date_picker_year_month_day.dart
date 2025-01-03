@@ -3,12 +3,22 @@ import 'package:flutter/cupertino.dart';
 
 class DatePicker {
   /// 返回用户选择的年份和月份，以 [int] 元组形式返回：`(year, month)`。
-  static Future<(int, int)> show(BuildContext context, int selectedyear,
-      int selectedmonth, String title) async {
+  static Future<(int, int, int)> show(BuildContext context, int selectedyear,
+      int selectedmonth, int selectedday, String title) async {
     int _selectedYear = selectedyear;
     int _selectedMonth = selectedmonth;
+    int _selectedDay = selectedday;
     String _title = title;
     bool isConfirm = false;
+
+    int getDaysInCurrentMonth() {
+      // 获取当前日期
+      DateTime now = DateTime.now();
+      // 获取当前月份的最后一天
+      DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
+      // 返回该月的天数
+      return lastDayOfMonth.day;
+    }
 
     await showModalBottomSheet(
       context: context,
@@ -102,6 +112,23 @@ class DatePicker {
                           }),
                         ),
                       ),
+                      Flexible(
+                        child: CupertinoPicker(
+                          onSelectedItemChanged: (int index) {
+                            _selectedDay = index + 1;
+                          },
+                          scrollController: FixedExtentScrollController(
+                            initialItem: _selectedDay - 1,
+                          ),
+                          itemExtent: 40,
+                          children: List<Widget>.generate(
+                              getDaysInCurrentMonth(), (index) {
+                            return Center(
+                              child: Text('${1 + index}'),
+                            );
+                          }),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -114,9 +141,9 @@ class DatePicker {
 
     // 返回用户选择的年份和月份
     if (!isConfirm) {
-      return (0, 0);
+      return (0, 0, 0);
     } else {
-      return (_selectedYear, _selectedMonth);
+      return (_selectedYear, _selectedMonth, _selectedDay);
     }
   }
 }

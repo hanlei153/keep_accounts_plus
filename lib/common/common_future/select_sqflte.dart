@@ -6,10 +6,6 @@ Future<dynamic> monthDisburseBill(int year, int month) async {
   String yearStr = year.toString();
   String yearMonthStr = '$yearStr-$monthStr';
   return await DatabaseHelper.instance.database.then((db) {
-    final res = db.rawQuery(
-        'SELECT SUM(amount) AS TotalAmount FROM bills WHERE type = "支出" AND date BETWEEN? AND?',
-        ['$yearMonthStr-01', '$yearMonthStr-31']);
-    print(res);
     return db.rawQuery(
         'SELECT SUM(amount) AS TotalAmount FROM bills WHERE type = "支出" AND date BETWEEN? AND?',
         ['$yearMonthStr-01', '$yearMonthStr-31']);
@@ -38,6 +34,19 @@ Future<dynamic> monthBills(int year, int month) async {
       'bills',
       where: 'date BETWEEN ? AND ?',
       whereArgs: ['$yearMonthStr-01', '$yearMonthStr-31'],
+      orderBy: 'date DESC',
+    );
+  });
+}
+
+// 查询指定范围收入支出账单
+Future<dynamic> selectedRangeBills(
+    String startDate, String endDate, String selectedType) async {
+  return await DatabaseHelper.instance.database.then((db) {
+    return db.query(
+      'bills',
+      where: 'date BETWEEN ? AND ?',
+      whereArgs: [startDate, endDate],
       orderBy: 'date DESC',
     );
   });
